@@ -4,7 +4,7 @@ import * as fs from 'node:fs';
 import * as path from 'node:path';
 import { marked } from 'marked';
 import { prefixRootRelativeUrls, prefixSitePath } from './config';
-import { addImageCaptions } from './template';
+import { addImageCaptions, darkenColor } from './template';
 import { renderItemPage } from './pages';
 import { parseFrontmatter } from '../shared/frontmatter';
 
@@ -48,7 +48,24 @@ export function buildItemPages(template: string, version: string): ManifestItem[
     fs.writeFileSync(path.join(itemDirectory, 'index.html'), pageHtml, 'utf8');
   }
 
+  writePageColorStyles(manifest);
   return manifest;
+}
+
+/** Writes CSS rules for the background colors assigned to work pages. */
+function writePageColorStyles(manifest: ManifestItem[]): void {
+  const backgrounds = new Set(
+    manifest.flatMap((item) =>
+      item.type === 'work' && item.color ? [darkenColor(item.color)] : []
+    )
+  );
+  const stylesheet = [...backgrounds].map((background) =>
+    `.page-bg-${background.slice(1)} {\n  --page-bg: ${background};\n}`
+  ).join('\n\n');
+  const stylesheetPath = path.join('dist', 'styles', 'page-colors.css');
+
+  fs.mkdirSync(path.dirname(stylesheetPath), { recursive: true });
+  fs.writeFileSync(stylesheetPath, stylesheet, 'utf8');
 }
 
 /** Converts parsed frontmatter into the public manifest shape. */

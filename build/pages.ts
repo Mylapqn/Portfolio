@@ -56,8 +56,8 @@ export function renderItemPage(
     const workCover = item.type === 'work' && item.thumb
         ? `<div class="work-cover"><img src="${escapeAttribute(item.thumb)}" alt="${escapeAttribute(item.title)}"></div>`
         : '';
-    const pageStyle = item.type === 'work' && item.color
-        ? `--page-bg: ${escapeAttribute(darkenColor(item.color))};`
+    const pageColorClass = item.type === 'work' && item.color
+        ? ` page-bg-${darkenColor(item.color).slice(1)}`
         : '';
 
     return injectTokens(template, {
@@ -69,8 +69,7 @@ export function renderItemPage(
         SUMMARY_ATTR: escapeAttribute(item.summary),
         CANONICAL_URL: escapeAttribute(canonicalUrl),
         OG_IMAGE: ogImageTag,
-        PAGE_CLASS: item.type === 'work' ? 'work-page' : 'article-page',
-        PAGE_STYLE: pageStyle,
+        PAGE_CLASS: `${item.type === 'work' ? 'work-page' : 'article-page'}${pageColorClass}`,
         WORK_COVER_HTML: workCover,
         DATE_LABEL: escapeHtml(formatDate(item.date)),
         TAG_LINKS_HTML: tagLinks,
