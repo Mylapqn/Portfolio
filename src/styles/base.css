@@ -36,7 +36,7 @@ a:hover {
   text-decoration: underline;
 }
 
-button, input {
+button, input, a {
   transition: background .2s, color .2s, border .2s;
 }
 
@@ -54,7 +54,7 @@ button, input {
   justify-content: center;
   /*! border-bottom: 1px solid #252a32; */
   background: #0d0f12;
-  background: linear-gradient(black,#0000);
+  background: linear-gradient(#090909,#0000);
 }
 
 .site-nav-links {
@@ -68,11 +68,11 @@ button, input {
 
 .site-nav-links a {
   color: #c9cdd4;
-  font-size: 12px;
+  font-size: 15px;
   font-weight: 700;
-  letter-spacing: 1.4px;
+  letter-spacing: .2em;
   white-space: nowrap;
-  line-height: 4em;
+  line-height: 5rem;
   display: block;
   /*! text-anchor: middle; */
   border-top: 2px solid transparent;
@@ -102,6 +102,30 @@ button, input {
 .static-page p {
   color: #b6bec9;
   font-size: 18px;
+}
+
+.filter-btn {
+  padding: 6px 12px;
+  border: 2px solid rgba(230, 232, 236, .34);
+  border-radius: 6px;
+  background: rgba(13, 15, 18, .52);
+  color: #e1e5eb;
+  font-size: 12px;
+  cursor: pointer;
+  text-transform: uppercase;
+  font-family: inherit;
+  font-weight: 500;
+}
+
+.filter-btn:hover {
+  border-color: #fff;
+  color:#fff;
+}
+
+.filter-btn.active {
+  border-color: #fff;
+  background: #fff;
+  color: #101318;
 }
 
 .sr-only {

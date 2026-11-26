@@ -50,14 +50,14 @@ export function renderItemPage(
         : '';
     const tagLinks = item.type === 'work'
         ? item.tags.map((tag) =>
-            `<a class="tag-badge" href="${SITE_BASE_PATH}/?tag=${escapeAttribute(encodeURIComponent(tag))}">${escapeHtml(tag)}</a>`
+            `<a class="filter-btn" href="${SITE_BASE_PATH}/?tag=${escapeAttribute(encodeURIComponent(tag))}">${escapeHtml(tag)}</a>`
         ).join('')
         : '';
     const workCover = item.type === 'work' && item.thumb
         ? `<div class="work-cover"><img src="${escapeAttribute(item.thumb)}" alt="${escapeAttribute(item.title)}"></div>`
         : '';
     const pageColorClass = item.type === 'work' && item.color
-        ? ` page-bg-${darkenColor(item.color).slice(1)}`
+        ? ` page-bg-${item.color.slice(1)}`
         : '';
 
     return injectTokens(template, {

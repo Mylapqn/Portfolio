@@ -8,7 +8,7 @@ summary: 3D hard-surface animated character
 embed: https://sketchfab.com/models/22bd0037a5a0483191ecf1fbe3e2d2d0/embed
 embed-icon: sketchfab
 size: 2
-color: #41b330
+color: #8fc646
 ---
 
 I made the robuddy. It was fun.

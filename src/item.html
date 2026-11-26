@@ -19,7 +19,7 @@
 </head>
 
 <body class="{{PAGE_CLASS}}">
-    <header class="site-nav" role="banner">
+    <header class="site-nav backdrop-blur" role="banner">
         <nav class="site-nav-links" aria-label="Main navigation">
             <a href="{{BASE_PATH}}/?view=works">WORKS</a>
             <a href="{{BASE_PATH}}/?view=blog">BLOG</a>
@@ -30,15 +30,17 @@
 
     {{WORK_COVER_HTML}}
 
-    <main class="detail-main" role="main">
-        <header class="work-heading">
+    <header class="work-heading">
+        <div class="heading-content fixed-width">
             <p class="work-date">{{DATE_LABEL}}</p>
             <h1 class="article-title">{{TITLE}}</h1>
             <div class="work-tags">{{TAG_LINKS_HTML}}</div>
             <div class="item-nav">
                 {{EXTERNAL_LINK_HTML}}
             </div>
-        </header>
+        </div>
+    </header>
+    <main class="detail-main fixed-width" role="main">
         {{EMBED_HTML}}
         <div class="article-content">
             {{CONTENT}}

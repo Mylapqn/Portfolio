@@ -23,11 +23,11 @@ export function formatDate(value: string): string {
 }
 
 /** Darkens a validated hexadecimal color for the project page background. */
-export function darkenColor(color: string): string {
+export function darkenColor(color: string, darkenFactor: number = 0.4): string {
   const channels = color.slice(1).match(/.{2}/g);
   if (!channels) return '#0d0f12';
   return `#${channels.map((channel) =>
-    Math.round(parseInt(channel, 16) * 0.3).toString(16).padStart(2, '0')
+    Math.round(parseInt(channel, 16) * darkenFactor).toString(16).padStart(2, '0')
   ).join('')}`;
 }
 
