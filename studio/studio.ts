@@ -275,7 +275,7 @@ async function handleBuildRequest(
 ): Promise<void> {
     try {
         const payload = JSON.parse(await readRequestBody(request)) as BuildPayload;
-        execSync('npx tsx build.ts', { stdio: 'inherit', cwd: ROOT });
+        execSync('npm run build', { stdio: 'inherit', cwd: ROOT });
         if (payload.pushFtp) uploadDistViaFtp();
 
         sendJson(response, 200, {

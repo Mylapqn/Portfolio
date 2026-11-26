@@ -13,7 +13,7 @@ The public portfolio is a static website. Source content and code live in the pr
 ## From source to site
 
 1. Each `content/<id>.md` supplies one entry. The filename without `.md` is its ID.
-2. `build.ts` parses the simple frontmatter, renders the Markdown body, and fills `src/item.html`.
+2. `build.ts` coordinates the build modules in `build/`, which parse frontmatter, render Markdown, and fill `src/item.html`.
 3. Each entry becomes `dist/p/<id>/index.html`; its metadata also goes into `dist/manifest.json`.
 4. The browser app reads the manifest to create the Works and Blog feeds.
 5. The build compiles the browser TypeScript, fills the home/About/Contact templates, and copies assets and styles into `dist/`.
@@ -24,7 +24,7 @@ The public portfolio is a static website. Source content and code live in the pr
 | Location | Responsibility |
 | --- | --- |
 | `content/` and `assets/` | Markdown entries and their images/media |
-| `build.ts` | Generates the static pages and manifest |
+| `build.ts` and `build/` | Coordinate output generation, content rendering, templates, and assets |
 | `src/index.html`, `src/item.html`, `src/about.html`, `src/contact.html` | Page templates |
 | `src/app.ts`, `src/app/` | Browser entry point, feed, cards, data types, and saved view state |
 | `src/style.css`, `src/styles/` | Public stylesheet entry point and modular styles |

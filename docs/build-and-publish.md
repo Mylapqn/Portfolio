@@ -15,7 +15,7 @@ npm run typecheck
 npm run build
 ```
 
-`npm run build` runs `build.ts`. It clears and recreates `dist/`, compiles the browser app, copies assets and styles, generates a page for each Markdown entry, and writes the home page and manifest. Never keep source files in `dist/`.
+`npm run build` runs `build.ts`, which coordinates the focused modules in `build/`. It clears and recreates `dist/`, compiles the browser app, copies assets and styles, generates a page for each Markdown entry, and writes the home page and manifest. Studio uses this same npm command when building. Never keep source files in `dist/`.
 
 Check `dist/index.html`, `dist/manifest.json`, and `dist/p/<id>/index.html` for the expected output. There is no separate test script; use the relevant typecheck/build command.
 

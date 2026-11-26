@@ -13,6 +13,6 @@ color: #fb745b
 
 I made the robuddy. It was fun.
 
-![GART2_2627_2IGP13E_Marek_Matous_Robuddy_PBR.png](/assets/robuddy-gart2_2627_2igp13e_marek_matous_robuddy_pbr.png)
+![The Robuddy](/assets/robuddy-gart2_2627_2igp13e_marek_matous_robuddy_pbr.png)
 
 I did modelling, texturing 😀 and other fun stuff
