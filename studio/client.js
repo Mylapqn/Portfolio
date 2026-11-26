@@ -329,7 +329,7 @@
                 state.inlineImages.push({ name: file.name, dataUrl: reader.result });
                 const safeFilename = file.name.replace(/[^a-zA-Z0-9._-]/g, '-').toLowerCase();
                 const slug = slugInput.value || 'project';
-                bodyEditor.value += `\n![${file.name}](/assets/${slug}-${safeFilename})\n`;
+                bodyEditor.value += `\n![](/assets/${slug}-${safeFilename})\n`;
                 updateDirtyState();
             };
             reader.onerror = () => showStatus(`Could not read ${file.name}.`, true);
