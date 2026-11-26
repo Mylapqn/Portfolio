@@ -4,6 +4,7 @@ Use this list for high-level project, design, content, and user-experience tasks
 
 ## Open
 
+- [ ] [Implement the codebase improvement plan](./codebase-improvements.md)
 - [ ] Add styles
 - [ ] Personalize top of page (photo, short text, friendly hello)
 - [ ] About me
