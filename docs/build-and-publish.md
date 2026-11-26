@@ -21,16 +21,16 @@ Check `dist/index.html`, `dist/manifest.json`, and `dist/p/<id>/index.html` for 
 
 ## Deployment paths and URLs
 
-- `SITE_BASE_PATH` sets the site's path prefix. It defaults to empty for a web-root deployment; set it to `/portfolio` for the `mylapqn.github.io/portfolio` project site.
-- `SITE_URL` sets the public base URL used for canonical and social URLs. It defaults to `https://mylapqn.github.io/portfolio`.
+- `SITE_BASE_PATH` sets the site's path prefix. It defaults to empty for a web-root deployment; set it to `/Portfolio` for the `mylapqn.github.io/Portfolio` project site. Match the repository name's capitalization.
+- `SITE_URL` sets the public base URL used for canonical and social URLs. It defaults to `https://mylapqn.github.io/Portfolio`.
 
 Set these in the build environment when deploying to a different path or domain. `SITE_URL` and `SITE_BASE_PATH` serve different purposes; for the GitHub project site, the defaults for `SITE_URL` do not automatically set `SITE_BASE_PATH`.
 
 ## Publish with GitHub Actions
 
-The workflow in `.github/workflows/build-deploy-pages.yml` typechecks and builds the site on pushes and pull requests targeting `main`. It sets `SITE_BASE_PATH=/portfolio`, packages `dist/` as a Pages artifact, and deploys it to GitHub Pages after successful pushes to `main` (or a manual run on `main`). Pull requests run the build but do not deploy.
+The workflow in `.github/workflows/build-deploy-pages.yml` uses Node.js 24 to typecheck and build the site on pushes and pull requests targeting `main`. It sets `SITE_BASE_PATH=/Portfolio`, packages `dist/` as a Pages artifact, and deploys it to GitHub Pages after successful pushes to `main` (or a manual run on `main`). Pull requests run the build but do not deploy.
 
-In the repository's **Settings → Pages**, select **GitHub Actions** as the build and deployment source. The workflow needs the repository's Pages deployment permissions enabled. Once configured, pushes to `main` publish to <https://mylapqn.github.io/portfolio/>.
+In the repository's **Settings → Pages**, select **GitHub Actions** as the build and deployment source. The workflow needs the repository's Pages deployment permissions enabled. Once configured, pushes to `main` publish to <https://mylapqn.github.io/Portfolio/>.
 
 ## Publish with Studio
 

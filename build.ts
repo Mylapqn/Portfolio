@@ -19,7 +19,7 @@ interface ManifestItem {
   color?: string;
 }
 
-const SITE_URL = (process.env.SITE_URL || 'https://mylapqn.github.io/portfolio').replace(/\/+$/, '');
+const SITE_URL = (process.env.SITE_URL || 'https://mylapqn.github.io/Portfolio').replace(/\/+$/, '');
 const SITE_ORIGIN = new URL(SITE_URL).origin;
 const SITE_BASE_PATH = normalizeBasePath(process.env.SITE_BASE_PATH || '');
 const SITE_NAME = 'Matouš Marek | Portfolio';
