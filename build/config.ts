@@ -9,7 +9,7 @@ export const SITE_NAME = 'Matouš Marek | Portfolio';
  *
  * @throws If a path segment contains unsupported characters or traversal segments.
  */
-function normalizeBasePath(value: string): string {
+export function normalizeBasePath(value: string): string {
   const segments = value.split('/').filter(Boolean);
   if (segments.some((segment) => !/^[A-Za-z0-9._~-]+$/.test(segment) || segment === '.' || segment === '..')) {
     throw new Error(`Invalid SITE_BASE_PATH: ${value}`);

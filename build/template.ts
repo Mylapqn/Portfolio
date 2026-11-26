@@ -1,13 +1,8 @@
-/** Replaces named template placeholders without interpreting replacement markers. */
+/** Replaces named template placeholders once, without reprocessing inserted values. */
 export function injectTokens(template: string, tokens: Record<string, string>): string {
-  let output = template;
-  for (const [key, value] of Object.entries(tokens)) {
-    output = output.replace(
-      new RegExp(`\\{\\{${key}\\}\\}`, 'g'),
-      () => value
-    );
-  }
-  return output;
+  return template.replace(/\{\{([A-Z0-9_]+)\}\}/g, (placeholder, key: string) =>
+    Object.hasOwn(tokens, key) ? tokens[key] : placeholder
+  );
 }
 
 /** Escapes text before inserting it into HTML content. */

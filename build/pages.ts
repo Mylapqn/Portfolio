@@ -43,7 +43,7 @@ export function renderItemPage(
     ? `<meta property="og:image" content="${escapeAttribute(ogImageUrl)}">`
     : '';
   const embedSection = item.embed
-    ? `<div class="stage"><iframe src="${escapeAttribute(item.embed)}" frameborder="0" allowfullscreen="true"></iframe></div>`
+    ? `<div class="stage"><iframe src="${escapeAttribute(item.embed)}" title="Embedded portfolio project" allowfullscreen></iframe></div>`
     : '';
   const externalLink = item.url
     ? `<a class="btn" href="${escapeAttribute(item.url)}" target="_blank" rel="noopener noreferrer">Open project &rarr;</a>`

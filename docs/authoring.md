@@ -25,7 +25,7 @@ Write the full project description here.
 ![A caption for the image](/assets/orbit-puzzle-process.webp)
 ```
 
-Frontmatter is intentionally not full YAML: use one `key: value` per line, with the opening and closing `---` on their own lines. Tags are comma-separated. Use `YYYY-MM-DD` dates; entries sort newest first by date.
+Frontmatter is intentionally not full YAML: use one `key: value` per line, with the opening and closing `---` on their own lines. Values stay on one line; multiline YAML values are not supported. The parser splits at the first colon and removes one optional blank separator line after the closing delimiter. Tags are comma-separated. Use `YYYY-MM-DD` dates; entries sort newest first by date.
 
 ## Fields
 

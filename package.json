@@ -5,7 +5,8 @@
   "scripts": {
     "build": "tsx build.ts",
     "studio": "tsx studio/studio.ts",
-    "typecheck": "tsc --noEmit && tsc --noEmit -p tsconfig.node.json"
+    "test": "tsx --test",
+    "typecheck": "tsc --noEmit && tsc --noEmit -p tsconfig.node.json && tsc --noEmit -p tsconfig.studio-client.json"
   },
   "devDependencies": {
     "@types/node": "^26.6.10",

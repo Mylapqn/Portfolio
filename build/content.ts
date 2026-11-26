@@ -6,6 +6,7 @@ import { marked } from 'marked';
 import { prefixRootRelativeUrls, prefixSitePath } from './config';
 import { addImageCaptions } from './template';
 import { renderItemPage } from './pages';
+import { parseFrontmatter } from '../shared/frontmatter';
 
 export interface ManifestItem {
   id: string;
@@ -30,9 +31,7 @@ export function buildItemPages(template: string, version: string): ManifestItem[
 
   for (const fileName of markdownFiles) {
     const itemId = path.basename(fileName, '.md');
-    const markdown = fs
-      .readFileSync(path.join('content', fileName), 'utf8')
-      .replace(/\r\n/g, '\n');
+    const markdown = fs.readFileSync(path.join('content', fileName), 'utf8');
     const { metadata, body } = parseFrontmatter(markdown);
     const item = createManifestItem(itemId, metadata);
     manifest.push(item);
@@ -67,32 +66,6 @@ function createManifestItem(itemId: string, metadata: Record<string, string>): M
     size: parseSize(metadata.size),
     color: parseColor(metadata.color)
   };
-}
-
-/** Reads the simple key/value header used by portfolio Markdown files. */
-function parseFrontmatter(markdown: string): {
-  metadata: Record<string, string>;
-  body: string;
-} {
-  const metadata: Record<string, string> = {};
-  if (!markdown.startsWith('---\n')) return { metadata, body: markdown };
-
-  const headerEnd = markdown.indexOf('\n---\n', 4);
-  if (headerEnd === -1) return { metadata, body: markdown };
-
-  const frontmatter = markdown.slice(4, headerEnd);
-  const body = markdown.slice(headerEnd + 5);
-
-  for (const line of frontmatter.split('\n')) {
-    const separatorIndex = line.indexOf(':');
-    if (separatorIndex === -1) continue;
-
-    const key = line.slice(0, separatorIndex).trim();
-    const value = line.slice(separatorIndex + 1).trim().replace(/^["']|["']$/g, '');
-    metadata[key] = value;
-  }
-
-  return { metadata, body };
 }
 
 /** Returns a supported tile size from frontmatter, if present. */

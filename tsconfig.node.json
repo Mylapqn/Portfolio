@@ -1,7 +1,8 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
-    "lib": ["ES2020"],
+    "target": "ES2022",
+    "lib": ["ES2022"],
     "types": ["node"],
     "module": "ESNext",
     "moduleResolution": "Bundler",
@@ -9,5 +10,5 @@
     "noEmit": true,
     "skipLibCheck": true
   },
-  "include": ["studio/**/*.ts", "build.ts"]
+  "include": ["studio/**/*.ts", "build.ts", "shared/**/*.ts"]
 }

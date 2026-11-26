@@ -13,7 +13,7 @@ export function prepareOutputDirectory(): void {
   fs.mkdirSync('dist/assets', { recursive: true });
 }
 
-/** Compiles the browser application using the project's browser TypeScript configuration. */
+/** Emits the browser application using the project's browser TypeScript configuration. */
 export function compileBrowserApp(): void {
   execSync('npx tsc', { stdio: 'inherit' });
 }
@@ -21,21 +21,27 @@ export function compileBrowserApp(): void {
 /** Adds a build identifier to emitted module imports to refresh browser caches. */
 export function versionBrowserModuleImports(version: string): void {
   const compiledFiles = ['dist/app.js', ...listJavaScriptFiles('dist/app')];
-  const versionQuery = `?v=${encodeURIComponent(version)}`;
 
   for (const filePath of compiledFiles) {
     const source = fs.readFileSync(filePath, 'utf8');
-    const versionedSource = source.replace(
-      /(\bfrom\s*|\bimport\s*)(['"])([^'"]+\.js)\2/g,
-      (
-        _match: string,
-        importKeyword: string,
-        quote: string,
-        modulePath: string
-      ) => `${importKeyword}${quote}${modulePath}${versionQuery}${quote}`
-    );
-    fs.writeFileSync(filePath, versionedSource, 'utf8');
+    fs.writeFileSync(filePath, addVersionToModuleImports(source, version), 'utf8');
   }
+}
+
+/** Adds the build version to local JavaScript module specifiers in compiler output. */
+export function addVersionToModuleImports(source: string, version: string): string {
+  const versionQuery = `?v=${encodeURIComponent(version)}`;
+  return source.replace(
+    /(\bfrom\s*|\bimport\s*(?:\(\s*)?)(['"])([^'"]+\.js)\2/g,
+    (
+      match: string,
+      importKeyword: string,
+      quote: string,
+      modulePath: string
+    ) => modulePath.startsWith('.')
+      ? `${importKeyword}${quote}${modulePath}${versionQuery}${quote}`
+      : match
+  );
 }
 
 /** Copies shared images, stylesheets, and server configuration into the output. */

@@ -8,6 +8,7 @@ Run these commands from the project root:
 
 ```powershell
 npm ci                 # fresh checkout only
+npm test
 npm run typecheck
 npm run build
 npm run studio
@@ -19,6 +20,7 @@ Studio opens at <http://localhost:4173/>. **Save** writes the current entry and 
 
 - [How the site works](./architecture.md) — source files, tech stack, and page/feed behavior.
 - [Authoring content](./authoring.md) — Markdown format, Studio, and image paths.
+- [Tests and checks](./testing.md) — what automated tests cover, when to run them, and how to read failures.
 - [Build and publish](./build-and-publish.md) — local commands, deployment settings, and FTP.
 - [Build versions and browser caching](./versioning.md) — cache behavior and asset updates.
 - [Troubleshooting](./troubleshooting.md) — common content, build, and Studio problems.

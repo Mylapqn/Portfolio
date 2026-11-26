@@ -3,7 +3,8 @@
 import * as http from 'node:http';
 import * as fs from 'node:fs';
 import * as path from 'node:path';
-import { execSync } from 'node:child_process';
+import { execFileSync, execSync } from 'node:child_process';
+import { parseFrontmatter } from '../shared/frontmatter';
 
 const PORT = Number(process.env.STUDIO_PORT) || 4173;
 const ROOT = process.cwd();
@@ -70,23 +71,7 @@ interface ParsedContent {
 }
 
 function parseContent(id: string, markdown: string): ParsedContent {
-    const metadata: Record<string, string> = {};
-    const normalizedMarkdown = markdown.replace(/\r\n/g, '\n');
-    let body = normalizedMarkdown;
-
-    if (normalizedMarkdown.startsWith('---\n')) {
-        const headerEnd = normalizedMarkdown.indexOf('\n---\n', 4);
-        if (headerEnd !== -1) {
-            for (const line of normalizedMarkdown.slice(4, headerEnd).split('\n')) {
-                const separatorIndex = line.indexOf(':');
-                if (separatorIndex === -1) continue;
-                const key = line.slice(0, separatorIndex).trim();
-                const value = line.slice(separatorIndex + 1).trim().replace(/^["']|["']$/g, '');
-                metadata[key] = value;
-            }
-            body = normalizedMarkdown.slice(headerEnd + 5).replace(/^\n+/, '');
-        }
-    }
+    const { metadata, body } = parseFrontmatter(markdown);
 
     return {
         project: {
@@ -171,11 +156,21 @@ function uploadDistViaFtp(): void {
 
     for (const filePath of listFiles(path.join(ROOT, 'dist'))) {
         const remotePath = path.relative(path.join(ROOT, 'dist'), filePath).replace(/\\/g, '/');
-        const remoteUrl = `ftp://${ftpConfig.host}${ftpConfig.remoteDir}/${remotePath}`;
-        execSync(
-            `curl -s --ftp-create-dirs -T "${filePath}" -u "${ftpConfig.user}:${ftpConfig.pass}" "${remoteUrl}"`,
-            { cwd: ROOT }
-        );
+        const remoteSegments = [
+            ...ftpConfig.remoteDir.split('/'),
+            ...remotePath.split('/')
+        ].filter(Boolean);
+        const remoteUrl = `ftp://${ftpConfig.host}/${remoteSegments.map(encodeURIComponent).join('/')}`;
+        execFileSync('curl', [
+            '--show-error',
+            '--fail',
+            '--ftp-create-dirs',
+            '--upload-file',
+            filePath,
+            '--user',
+            `${ftpConfig.user}:${ftpConfig.pass}`,
+            remoteUrl
+        ], { cwd: ROOT, stdio: 'inherit' });
     }
 }
 

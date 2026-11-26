@@ -16,7 +16,7 @@
 
 ## The browser shows old code or content
 
-Rebuild and deploy the complete contents of `dist/`, including nested JavaScript modules. Script and stylesheet URLs are versioned on each build; see [Build versions and browser caching](./versioning.md). For images, use a new filename when replacing an asset.
+Rebuild and deploy the complete contents of `dist/`, including nested JavaScript modules. The build versions the entry script and local module imports on each build; see [Build versions and browser caching](./versioning.md). For images, use a new filename when replacing an asset.
 
 ## Studio cannot start, build, or upload
 

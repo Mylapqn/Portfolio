@@ -1,5 +1,5 @@
 import { createCard } from './cards.js';
-import { fetchText } from './manifest.js';
+import { fetchManifest } from './manifest.js';
 import { loadSavedView, saveViewState } from './view-state.js';
 import { sitePath } from './site-path.js';
 import type { AppState, PortfolioItem } from './types.js';
@@ -33,6 +33,16 @@ export function initializeFeed(buildVersion: string): void {
         if (tag !== 'ALL') nextParams.set('tag', tag);
         const query = nextParams.toString();
         window.history.replaceState(null, '', `${sitePath('/')}${query ? `?${query}` : ''}`);
+    }
+
+    function configureBlogView(): void {
+        hero.classList.add('hero--blog');
+        heroImage.hidden = true;
+        search.placeholder = 'Search articles...';
+        searchLabel.textContent = 'Search articles';
+        (document.getElementById('hero-title') as HTMLElement).textContent = 'Writing';
+        (document.getElementById('hero-description') as HTMLElement).textContent =
+            'Notes, ideas and things I have learned along the way.';
     }
 
     /** Creates at most six popular tag filters for the current feed view. */
@@ -73,7 +83,6 @@ export function initializeFeed(buildVersion: string): void {
             button.addEventListener('click', () => applyFilter(tagName));
             filters.appendChild(button);
         }
-
     }
 
     /** Selects items in the current view and renders its initial depth. */
@@ -195,9 +204,9 @@ export function initializeFeed(buildVersion: string): void {
     }
 
     bindEvents();
-    fetchText(sitePath('/manifest.json?v=' + encodeURIComponent(buildVersion))).then(
-        (manifestText) => {
-            state.allItems = JSON.parse(manifestText) as PortfolioItem[];
+    fetchManifest(sitePath(`/manifest.json?v=${encodeURIComponent(buildVersion)}`)).then(
+        (items) => {
+            state.allItems = items;
             if (state.view === 'works') {
                 const firstCover = state.allItems.find((item) => item.type === 'work' && item.thumb)?.thumb;
                 if (firstCover) {
@@ -205,12 +214,7 @@ export function initializeFeed(buildVersion: string): void {
                     heroImage.hidden = false;
                 }
             } else {
-                hero.classList.add('hero--blog');
-                search.placeholder = 'Search articles...';
-                searchLabel.textContent = 'Search articles';
-                (document.getElementById('hero-title') as HTMLElement).textContent = 'Writing';
-                (document.getElementById('hero-description') as HTMLElement).textContent =
-                    'Notes, ideas and things I have learned along the way.';
+                configureBlogView();
             }
 
             const savedView = loadSavedView();
@@ -219,15 +223,6 @@ export function initializeFeed(buildVersion: string): void {
                 (!params.has('tag') || params.get('tag') === savedView.tag);
             if (savedViewMatches) {
                 state.activeTag = savedView.tag;
-                if (savedView.view === 'blog') {
-                    hero.classList.add('hero--blog');
-                    heroImage.hidden = true;
-                    search.placeholder = 'Search articles...';
-                    searchLabel.textContent = 'Search articles';
-                    (document.getElementById('hero-title') as HTMLElement).textContent = 'Writing';
-                    (document.getElementById('hero-description') as HTMLElement).textContent =
-                        'Notes, ideas and things I have learned along the way.';
-                }
             } else {
                 state.activeTag = params.get('tag') || 'ALL';
             }
@@ -244,10 +239,9 @@ export function initializeFeed(buildVersion: string): void {
             if (savedViewMatches) {
                 window.setTimeout(() => window.scrollTo(0, savedView.scrollY), 20);
             }
-        },
-        (error: unknown) => {
-            const detail = error instanceof Error ? ` ${error.message}` : '';
-            status.textContent = `Failed to load portfolio manifest.${detail}`;
         }
-    );
+    ).catch((error: unknown) => {
+        const detail = error instanceof Error ? ` ${error.message}` : '';
+        status.textContent = `Failed to load portfolio manifest.${detail}`;
+    });
 }
