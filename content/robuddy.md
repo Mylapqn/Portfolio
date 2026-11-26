@@ -1,5 +1,5 @@
 ---
-title: Robuddy
+title: Robuddy - Animated Character
 type: work
 date: 2026-11-25
 tags: 3d, modelling, texturing, rigging, animation

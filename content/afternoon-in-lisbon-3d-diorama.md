@@ -1,7 +1,7 @@
 ---
 title: Afternoon in Lisbon - 3D Diorama
 type: work
-date: 2026-11-26
+date: 2026-03-02
 tags: 3d, environment, modelling
 thumb: /assets/afternoon-in-lisbon-3d-diorama-lisbon.png
 summary: 

@@ -1,7 +1,7 @@
 ---
 title: Perfumer's Desk - 3D Diorama
 type: work
-date: 2026-11-26
+date: 2026-05-02
 tags: 3d, modelling, texturing, substance painter
 thumb: /assets/perfumer-s-desk-3d-diorama-artisans-desk.png
 summary: A game-ready diorama featuring a fantasy perfumer's workspace

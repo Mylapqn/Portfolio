@@ -1,8 +1,8 @@
 ---
 title: Death Wish
 type: work
-date: 2026-11-25
-tags: game, art, 2d, game jam
+date: 2025-06-25
+tags: game, art, 2d, game jam, ui
 thumb: /assets/deathwish-banner-itch.png
 summary: 2D game about being friends with Death
 url: https://notrustybot.itch.io/deathwish
