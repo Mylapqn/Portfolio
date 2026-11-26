@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Selected work, writing and projects by Matouš Marek.">
+    <title>{{SITE_NAME}}</title>
+    <meta name="site-base-path" content="{{BASE_PATH}}">
+    <link rel="stylesheet" href="{{BASE_PATH}}/style.css?v={{VERSION}}">
+</head>
+
+<body>
+    <header class="site-nav" role="banner">
+        <nav class="site-nav-links" aria-label="Main navigation">
+            <a href="{{BASE_PATH}}/?view=works" data-page="works">WORKS</a>
+            <a href="{{BASE_PATH}}/?view=blog" data-page="blog">BLOG</a>
+            <a href="{{BASE_PATH}}/about/">ABOUT ME</a>
+            <a href="{{BASE_PATH}}/contact/">CONTACT</a>
+        </nav>
+    </header>
+
+    <section id="hero" class="hero" aria-labelledby="hero-title">
+        <img id="hero-image" class="hero-image" alt="" hidden>
+        <div class="hero-shade"></div>
+        <div class="hero-inner">
+            <p class="hero-kicker">MATOUŠ MAREK · PORTFOLIO</p>
+            <h1 id="hero-title">Selected work</h1>
+            <p id="hero-description">Games, interactive systems and engineering.</p>
+            <label id="search-label" class="sr-only" for="search">Search works</label>
+            <input id="search" class="feed-search" type="search" placeholder="Search works..." autocomplete="off">
+            <div id="filters" class="filters" aria-label="Filter by popular tags"></div>
+        </div>
+    </section>
+
+    <main class="wrap">
+        <div id="feed" class="feed" aria-live="polite"></div>
+        <div id="status" class="status">Loading...</div>
+    </main>
+
+    <script type="module" src="{{BASE_PATH}}/app.js?v={{VERSION}}"></script>
+</body>
+
+</html>

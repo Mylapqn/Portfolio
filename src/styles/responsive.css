@@ -1,0 +1,116 @@
+@media (max-width: 760px) {
+  .hero {
+    min-height: 410px;
+  }
+
+  .wrap {
+    padding-right: 16px;
+    padding-left: 16px;
+  }
+
+  .feed-row {
+    gap: 16px;
+  }
+
+  .feed--articles {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+  }
+
+  .card-thumb {
+    height: 190px;
+  }
+
+  .card--size-3 .card-thumb {
+    height: 285px;
+  }
+
+  .detail-main {
+    padding-right: 20px;
+    padding-left: 20px;
+  }
+}
+
+@media (max-width: 540px) {
+  .site-nav {
+    min-height: 60px;
+  }
+
+  .site-nav-links {
+    width: 100%;
+    gap: 0;
+    justify-content: space-around;
+    padding: 10px 8px;
+  }
+
+  .site-nav-links a {
+    font-size: 10px;
+    letter-spacing: .8px;
+  }
+
+  .hero {
+    min-height: 400px;
+  }
+
+  .hero-inner {
+    padding: 44px 18px 34px;
+  }
+
+  .hero h1 {
+    letter-spacing: -1px;
+  }
+
+  .feed-row {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .feed-row .card {
+    width: 100%;
+  }
+
+  .feed-row .card-thumb {
+    height: 220px;
+  }
+
+  .feed-row .card--size-1,
+  .feed-row .card--size-2 {
+    height: 360px;
+  }
+
+  .feed-row .card--size-3 .card-thumb {
+    height: 320px;
+  }
+
+  .feed-row .card--size-3 {
+    height: 460px;
+  }
+
+  .feed--articles {
+    grid-template-columns: 1fr;
+  }
+
+  .article-content p,
+  .article-content h2,
+  .article-content h3,
+  .article-content ul,
+  .article-content ol,
+  .article-content blockquote,
+  .article-content pre {
+    width: 100%;
+  }
+
+  .work-cover {
+    height: 75vw;
+    min-height: 260px;
+  }
+
+  .work-heading {
+    padding-top: 32px;
+  }
+
+  .article-content {
+    font-size: 16px;
+  }
+}

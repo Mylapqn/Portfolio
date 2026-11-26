@@ -1,0 +1,4 @@
+@import url("/styles/base.css?v={{VERSION}}");
+@import url("/styles/feed.css?v={{VERSION}}");
+@import url("/styles/detail.css?v={{VERSION}}");
+@import url("/styles/responsive.css?v={{VERSION}}");

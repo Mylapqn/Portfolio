@@ -1,0 +1,66 @@
+@media (max-width: 850px) {
+    .workspace {
+        grid-template-columns: 1fr;
+        padding: 16px;
+    }
+
+    .project-panel {
+        position: static;
+    }
+
+    .project-list {
+        max-height: 270px;
+    }
+}
+
+@media (max-width: 560px) {
+    .topbar {
+        align-items: flex-start;
+        flex-direction: column;
+        padding: 14px 16px;
+    }
+
+    .dashboard-actions {
+        justify-content: flex-start;
+    }
+
+    .workspace {
+        gap: 14px;
+        padding: 12px;
+    }
+
+    .field-grid-two {
+        grid-template-columns: 1fr;
+        gap: 0;
+    }
+
+    .editor-panel {
+        padding: 20px 16px;
+    }
+
+    .editor-heading {
+        align-items: flex-start;
+    }
+
+    .editor-title-line {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 6px;
+    }
+
+    .actions {
+        width: 100%;
+    }
+
+    .actions .button {
+        flex: 1;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        transition-duration: .01ms !important;
+    }
+}

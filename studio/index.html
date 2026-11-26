@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="color-scheme" content="dark">
+    <title>Portfolio Studio</title>
+    <link rel="stylesheet" href="/studio.css">
+    <script src="/client.js" defer></script>
+</head>
+
+<body>
+    <header class="topbar">
+        <div>
+            <p class="eyebrow">Portfolio workspace</p>
+            <h1>Studio</h1>
+        </div>
+        <div class="dashboard-actions">
+            <button id="new-project" class="button button-muted" type="button">New project</button>
+            <button id="build-content" class="button button-primary" type="button">Build Content</button>
+            <button id="build-ftp" class="button button-secondary" type="button">Build &amp; Push to FTP</button>
+            <span id="dashboard-status" class="dashboard-status" role="status" aria-live="polite"></span>
+        </div>
+    </header>
+
+    <main class="workspace">
+        <aside class="project-panel" aria-label="Existing projects">
+            <div class="panel-heading">
+                <div>
+                    <h2>Projects</h2>
+                    <p id="project-count" class="muted">Loading entries…</p>
+                </div>
+            </div>
+            <label class="sr-only" for="project-search">Search projects</label>
+            <input id="project-search" type="search" placeholder="Search projects" autocomplete="off">
+            <div id="project-list" class="project-list" role="list"></div>
+            <p id="project-error" class="error-message" role="alert"></p>
+        </aside>
+
+        <section class="editor-panel" aria-label="Project editor">
+            <div class="editor-heading">
+                <div>
+                    <p class="eyebrow">Entry details</p>
+                    <div class="editor-title-line">
+                        <h2 id="editor-title">Create a project</h2>
+                        <span id="dirty-indicator" class="status-badge unsaved-indicator" hidden>Unsaved changes</span>
+                    </div>
+                </div>
+                <span id="editing-badge" class="status-badge" hidden>Editing existing</span>
+            </div>
+
+            <form id="project-form">
+                <div class="field-grid field-grid-two">
+                    <div class="field">
+                        <label for="type">Entry type</label>
+                        <select id="type">
+                            <option value="work">Work</option>
+                            <option value="article">Article</option>
+                        </select>
+                    </div>
+                    <div class="field">
+                        <label for="date">Date</label>
+                        <input id="date" type="date">
+                    </div>
+                </div>
+
+                <div class="field-grid field-grid-two">
+                    <div class="field">
+                        <label for="title">Title</label>
+                        <input id="title" type="text" placeholder="A clear, descriptive project title" required>
+                    </div>
+                    <div class="field">
+                        <label for="id">Slug</label>
+                        <input id="id" type="text" placeholder="descriptive-project-slug" required>
+                        <small>Used in the project URL. Existing project slugs stay fixed.</small>
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label for="summary">Summary</label>
+                    <input id="summary" type="text" placeholder="A concise overview for the project card">
+                </div>
+
+                <div class="field-grid field-grid-two">
+                    <div class="field">
+                        <label for="size">Work card size</label>
+                        <select id="size">
+                            <option value="1">1 · Standard</option>
+                            <option value="2">2 · Wide</option>
+                            <option value="3">3 · Full row</option>
+                        </select>
+                    </div>
+                    <div class="field">
+                        <label for="color-enabled">Work color <span class="optional">Optional</span></label>
+                        <div class="color-field">
+                            <input id="color-enabled" type="checkbox">
+                            <span>Use a custom color</span>
+                        </div>
+                        <div id="color-picker" class="color-picker" hidden>
+                            <input id="color" type="color" value="#58a6ff" aria-label="Custom work color">
+                            <span class="color-value">Choose a color or paste its hex value in the browser picker.</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label for="tag-input">Tags</label>
+                    <div class="tag-entry">
+                        <input id="tag-input" type="text" placeholder="Type to find a tag or add a new one" autocomplete="off" aria-autocomplete="list" aria-controls="tag-suggestions">
+                        <div id="tag-suggestions" class="suggestions" role="listbox" hidden></div>
+                    </div>
+                    <small>Choose a suggestion or press Enter to add a new tag.</small>
+                    <div id="tag-chips" class="chips" aria-label="Selected tags"></div>
+                </div>
+
+                <div class="field-grid field-grid-two">
+                    <div class="field">
+                        <label for="url">External or fullscreen URL <span class="optional">Optional</span></label>
+                        <input id="url" type="text" placeholder="https://example.com/project">
+                    </div>
+                    <div class="field">
+                        <label for="embed">Embed URL <span class="optional">Optional</span></label>
+                        <input id="embed" type="text" placeholder="https://example.com/project/embed">
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label for="thumb-url">Thumbnail path <span class="optional">Optional</span></label>
+                    <input id="thumb-url" type="text" placeholder="/assets/project-cover.webp">
+                    <div id="thumb-drop" class="dropzone" tabindex="0" role="button" aria-label="Choose or drop a thumbnail image">
+                        <span class="drop-title">Choose or drop a cover image</span>
+                        <span id="thumb-name" class="muted">Image uploads are saved to the assets folder.</span>
+                    </div>
+                    <input id="thumb-input" type="file" accept="image/*" hidden>
+                </div>
+
+                <div class="field">
+                    <label for="body">Markdown content</label>
+                    <textarea id="body" placeholder="Write the project description in Markdown. Drop images here to upload and insert them." rows="15"></textarea>
+                    <small>Drop images into the editor to upload them and insert Markdown links.</small>
+                </div>
+
+                <div class="form-footer">
+                    <p id="status" role="status" aria-live="polite"></p>
+                    <div class="actions">
+                        <button id="save-file" class="button button-muted" type="button">Save</button>
+                        <button id="save-build" class="button button-primary" type="submit">Save &amp; Build</button>
+                    </div>
+                </div>
+            </form>
+        </section>
+    </main>
+
+    <dialog id="unsaved-dialog" class="confirm-dialog" aria-labelledby="unsaved-title">
+        <h2 id="unsaved-title">Unsaved changes</h2>
+        <p>Save your changes before switching projects?</p>
+        <div class="confirm-actions">
+            <button id="unsaved-cancel" class="button button-muted" type="button">Cancel</button>
+            <button id="unsaved-save" class="button button-primary" type="button">Save</button>
+            <button id="unsaved-discard" class="button button-secondary" type="button">Discard</button>
+        </div>
+    </dialog>
+</body>
+
+</html>

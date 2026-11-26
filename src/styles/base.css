@@ -1,0 +1,100 @@
+* {
+  box-sizing: border-box;
+}
+
+:root {
+  color-scheme: dark;
+  --page-bg: #0d0f12;
+  --panel-bg: #15181e;
+  --line: #292e37;
+  --text: #e6e8ec;
+  --muted: #9aa3ae;
+  --accent: #58a6ff;
+}
+
+html {
+  min-width: 320px;
+  background: var(--page-bg);
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background: var(--page-bg);
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+.site-nav {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  width: 100%;
+  min-height: 72px;
+  align-items: center;
+  justify-content: center;
+  border-bottom: 1px solid #252a32;
+  background: #0d0f12;
+}
+
+.site-nav-links {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(22px, 5vw, 72px);
+  padding: 12px 20px;
+}
+
+.site-nav-links a {
+  color: #c9cdd4;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1.4px;
+  white-space: nowrap;
+}
+
+.site-nav-links a:hover,
+.site-nav-links a[aria-current="page"] {
+  color: #fff;
+  text-decoration: none;
+}
+
+.static-page {
+  max-width: 850px;
+  margin: 0 auto;
+  padding: 100px 24px;
+}
+
+.static-page h1 {
+  margin: 0 0 16px;
+  color: #fff;
+  font-size: clamp(38px, 6vw, 64px);
+  line-height: 1.1;
+}
+
+.static-page p {
+  color: #b6bec9;
+  font-size: 18px;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  clip-path: inset(50%);
+}
