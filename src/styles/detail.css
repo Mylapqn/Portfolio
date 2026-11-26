@@ -71,7 +71,9 @@
 }
 
 .btn {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
   padding: 8px 15px;
   border: 1px solid #454c58;
   background: rgba(21, 24, 30, .75);
@@ -85,9 +87,38 @@
 }
 
 .stage {
+  position: relative;
   width: 100%;
   margin: 12px 0 32px;
   background: #000;
+}
+
+.destination-marker {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.destination-icon {
+  display: block;
+  width: 23px;
+  height: 23px;
+  object-fit: contain;
+}
+
+.destination-icon-fallback {
+  color: #fff;
+  font-size: 8px;
+  font-weight: 800;
+  letter-spacing: .3px;
+}
+
+.stage-icon {
+  position: absolute;
+  z-index: 1;
+  top: 12px;
+  left: 12px;
 }
 
 .stage iframe {
@@ -166,41 +197,73 @@
 }
 
 .image-viewer {
-  position: relative;
-  max-width: min(94vw, 1500px);
-  max-height: 94vh;
-  padding: 48px 16px 14px;
-  border: 1px solid #444b57;
-  background: #0a0c0f;
+  position: fixed;
+  inset: 0;
+  box-sizing: border-box;
+  width: auto;
+  height: 100vh;
+  height: 100dvh;
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  overscroll-behavior: none;
+  border: 0;
+  background: transparent;
   color: #fff;
 }
 
+.image-viewer[open] {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .image-viewer::backdrop {
-  background: rgba(0, 0, 0, .9);
+  background: rgba(5, 7, 10, .72);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
 }
 
 .image-viewer img {
   display: block;
+  width: auto;
+  height: 80vh;
+  height: 80dvh;
   max-width: 90vw;
-  max-height: 78vh;
-  margin: 0 auto;
+  max-height: 80vh;
+  max-height: 80dvh;
   object-fit: contain;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-drag: none;
+  transition: transform 140ms ease-out;
 }
 
-.image-viewer p {
-  margin: 8px 0 0;
-  color: #b8c0ca;
-  font-size: 13px;
-  text-align: center;
+.image-viewer img.is-zoomed {
+  cursor: grab;
+}
+
+.image-viewer img.is-dragging {
+  cursor: grabbing;
 }
 
 .image-viewer-close {
   position: absolute;
-  top: 5px;
-  right: 12px;
+  z-index: 1;
+  top: max(12px, env(safe-area-inset-top));
+  right: max(12px, env(safe-area-inset-right));
+  display: grid;
+  width: 48px;
+  height: 48px;
+  place-items: center;
+  padding: 0;
   border: 0;
   background: transparent;
   color: #fff;
-  font-size: 32px;
+  font-size: 40px;
+  line-height: 1;
+  text-shadow: 0 1px 5px rgba(0, 0, 0, .75);
   cursor: pointer;
 }

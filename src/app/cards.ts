@@ -1,6 +1,12 @@
 import type { PortfolioItem } from './types.js';
 import { sitePath } from './site-path.js';
 
+type PlatformIcon = 'link' | 'itch' | 'game' | 'sketchfab' | 'video';
+
+interface PlatformDestination {
+    icon: PlatformIcon;
+}
+
 /** Creates a feed card that links to its detail page while preserving native anchor behavior. */
 export function createCard(
     item: PortfolioItem,
@@ -17,6 +23,9 @@ export function createCard(
     }
 
     if (item.thumb) {
+        const media = document.createElement('div');
+        media.className = 'card-media';
+
         const thumbnailLink = document.createElement('a');
         thumbnailLink.href = itemPageUrl;
         thumbnailLink.className = 'card-thumb-link';
@@ -26,7 +35,14 @@ export function createCard(
         thumbnail.src = item.thumb;
         thumbnail.alt = item.title;
         thumbnailLink.appendChild(thumbnail);
-        card.appendChild(thumbnailLink);
+        media.appendChild(thumbnailLink);
+
+        if (item.type === 'work') {
+            const platformIcons = createPlatformIconRow(item);
+            if (platformIcons) media.appendChild(platformIcons);
+        }
+
+        card.appendChild(media);
     }
 
     const cardBody = document.createElement('div');
@@ -77,6 +93,82 @@ export function createCard(
     });
 
     return card;
+}
+
+/** Creates non-interactive platform markers for a work thumbnail. */
+function createPlatformIconRow(item: PortfolioItem): HTMLElement | null {
+    const destinations = collectPlatformDestinations(item);
+    if (!destinations.length) return null;
+
+    const row = document.createElement('div');
+    row.className = 'platform-icons';
+    row.setAttribute('role', 'img');
+    row.setAttribute(
+        'aria-label',
+        `Project platforms: ${destinations.map(({ icon }) => platformLabel(icon)).join(', ')}`
+    );
+
+    for (const { icon } of destinations) {
+        const marker = document.createElement('span');
+        marker.className = 'platform-marker';
+
+        const image = document.createElement('img');
+        image.className = 'platform-icon';
+        image.src = sitePath(`/assets/icons/${icon}.svg`);
+        image.alt = '';
+
+        const fallback = document.createElement('span');
+        fallback.className = 'platform-icon-fallback';
+        fallback.textContent = platformFallback(icon);
+        fallback.hidden = true;
+        image.addEventListener('error', () => {
+            image.hidden = true;
+            fallback.hidden = false;
+        }, { once: true });
+
+        marker.append(image, fallback);
+        row.appendChild(marker);
+    }
+
+    return row;
+}
+
+/** Collects one marker for each distinct link and embed icon kind. */
+function collectPlatformDestinations(item: PortfolioItem): PlatformDestination[] {
+    const destinations: PlatformDestination[] = [];
+    const seen = new Set<PlatformIcon>();
+    const add = (icon: PlatformIcon): void => {
+        if (seen.has(icon)) return;
+        seen.add(icon);
+        destinations.push({ icon });
+    };
+
+    if (item.url) add(item.urlIcon || 'link');
+    if (item.embed) add(item.embedIcon || 'game');
+
+    return destinations;
+}
+
+/** Provides an accessible action label for a platform marker. */
+function platformLabel(icon: PlatformIcon): string {
+    switch (icon) {
+        case 'itch': return 'itch.io';
+        case 'game': return 'Game embed';
+        case 'sketchfab': return 'Sketchfab';
+        case 'link': return 'Generic link';
+        case 'video': return 'Video';
+    }
+}
+
+/** Provides a compact label when the corresponding SVG is not present. */
+function platformFallback(icon: PlatformIcon): string {
+    switch (icon) {
+        case 'itch': return 'ITCH';
+        case 'game': return 'GAME';
+        case 'sketchfab': return '3D';
+        case 'link': return 'LINK';
+        case 'video': return 'VIDEO';
+    }
 }
 
 function createTitleLink(title: string, href: string): HTMLAnchorElement {

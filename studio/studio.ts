@@ -16,6 +16,13 @@ const STUDIO_STYLES = new Set([
     'studio-components.css',
     'studio-responsive.css'
 ]);
+const STUDIO_ICON_FILES = new Set([
+    'game.svg',
+    'itch.svg',
+    'link.svg',
+    'sketchfab.svg',
+    'video.svg'
+]);
 
 const ftpConfig = {
     host: process.env.FTP_HOST || '',
@@ -40,6 +47,8 @@ interface SavePayload {
     thumb: string;
     url: string;
     embed: string;
+    urlIcon: 'link' | 'itch';
+    embedIcon: 'game' | 'itch' | 'sketchfab' | 'video';
     size: number;
     color: string;
     body: string;
@@ -61,6 +70,8 @@ interface Project {
     thumb: string;
     url: string;
     embed: string;
+    urlIcon: 'link' | 'itch';
+    embedIcon: 'game' | 'itch' | 'sketchfab' | 'video';
     size: number;
     color: string;
 }
@@ -84,6 +95,12 @@ function parseContent(id: string, markdown: string): ParsedContent {
             thumb: metadata.thumb || '',
             url: metadata.url || '',
             embed: metadata.embed || '',
+            urlIcon: metadata['url-icon'] === 'itch' ? 'itch' : 'link',
+            embedIcon: metadata['embed-icon'] === 'itch' ||
+                metadata['embed-icon'] === 'sketchfab' ||
+                metadata['embed-icon'] === 'video'
+                ? metadata['embed-icon']
+                : 'game',
             size: metadata.size === '2' || metadata.size === '3' ? Number(metadata.size) : 1,
             color: /^#[0-9a-f]{6}$/i.test(metadata.color || '') ? metadata.color : ''
         },
@@ -207,6 +224,17 @@ async function handleSaveRequest(
         if (payload.type === 'work' && payload.color && !/^#[0-9a-f]{6}$/i.test(payload.color)) {
             throw new Error('Work color must be a 6-digit hex value.');
         }
+        if (payload.urlIcon !== 'link' && payload.urlIcon !== 'itch') {
+            throw new Error('Choose a valid icon for the external URL.');
+        }
+        if (
+            payload.embedIcon !== 'game' &&
+            payload.embedIcon !== 'itch' &&
+            payload.embedIcon !== 'sketchfab' &&
+            payload.embedIcon !== 'video'
+        ) {
+            throw new Error('Choose a valid icon for the embed.');
+        }
 
         const destination = contentPath(payload.id);
         if (payload.existingId) {
@@ -235,7 +263,9 @@ async function handleSaveRequest(
             thumbnailPath ? `thumb: ${thumbnailPath}` : '',
             `summary: ${payload.summary.replace(/[\r\n]/g, ' ')}`,
             payload.url ? `url: ${payload.url.replace(/[\r\n]/g, ' ')}` : '',
+            payload.url ? `url-icon: ${payload.urlIcon}` : '',
             payload.embed ? `embed: ${payload.embed.replace(/[\r\n]/g, ' ')}` : '',
+            payload.embed ? `embed-icon: ${payload.embedIcon}` : '',
             payload.type === 'work' ? `size: ${payload.size}` : '',
             payload.type === 'work' && /^#[0-9a-f]{6}$/i.test(payload.color)
                 ? `color: ${payload.color}`
@@ -298,6 +328,25 @@ function serveStudioAsset(response: http.ServerResponse, fileName: string, conte
     response.end(fs.readFileSync(filePath));
 }
 
+/** Serves only known icon assets to Studio's destination type previews. */
+function serveStudioIcon(response: http.ServerResponse, fileName: string): void {
+    if (!STUDIO_ICON_FILES.has(fileName)) {
+        response.writeHead(404);
+        response.end('Icon not found');
+        return;
+    }
+
+    const filePath = path.join(ROOT, 'assets', 'icons', fileName);
+    if (!fs.existsSync(filePath)) {
+        response.writeHead(404);
+        response.end('Icon not found');
+        return;
+    }
+
+    response.writeHead(200, { 'Content-Type': 'image/svg+xml; charset=utf-8' });
+    response.end(fs.readFileSync(filePath));
+}
+
 const server = http.createServer(async (request, response) => {
     const requestUrl = new URL(request.url || '/', 'http://localhost');
 
@@ -315,6 +364,10 @@ const server = http.createServer(async (request, response) => {
     }
     if (request.method === 'GET' && requestUrl.pathname === '/client.js') {
         serveStudioAsset(response, 'client.js', 'text/javascript; charset=utf-8');
+        return;
+    }
+    if (request.method === 'GET' && requestUrl.pathname.startsWith('/studio-icons/')) {
+        serveStudioIcon(response, requestUrl.pathname.slice('/studio-icons/'.length));
         return;
     }
     if (request.method === 'GET' && requestUrl.pathname === '/api/projects') {

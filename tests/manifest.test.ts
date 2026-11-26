@@ -11,7 +11,9 @@ const validItem = {
   thumb: '',
   summary: '',
   url: '',
-  embed: ''
+  embed: '',
+  urlIcon: 'link',
+  embedIcon: 'game'
 };
 
 test('parses valid manifest entries', () => {
@@ -22,4 +24,21 @@ test('rejects invalid manifest roots and entries with a useful location', () => 
   assert.throws(() => parseManifest('{}'), /must be an array/);
   assert.throws(() => parseManifest(JSON.stringify([validItem, { ...validItem, tags: [1] }])), /entry 2 is invalid/);
   assert.throws(() => parseManifest('{'), SyntaxError);
+});
+
+test('accepts all supported destination icons', () => {
+  const item = {
+    ...validItem,
+    urlIcon: 'itch',
+    embedIcon: 'video'
+  };
+
+  assert.deepEqual(parseManifest(JSON.stringify([item])), [item]);
+});
+
+test('rejects unsupported destination icon kinds', () => {
+  assert.throws(
+    () => parseManifest(JSON.stringify([{ ...validItem, embedIcon: 'unknown' }])),
+    /entry 1 is invalid/
+  );
 });

@@ -45,6 +45,12 @@ function isPortfolioItem(value: unknown): value is PortfolioItem {
         typeof item.summary === 'string' &&
         typeof item.url === 'string' &&
         typeof item.embed === 'string' &&
+        (item.urlIcon === undefined || item.urlIcon === 'link' || item.urlIcon === 'itch') &&
+        (item.embedIcon === undefined ||
+            item.embedIcon === 'game' ||
+            item.embedIcon === 'itch' ||
+            item.embedIcon === 'sketchfab' ||
+            item.embedIcon === 'video') &&
         (item.size === undefined || item.size === 1 || item.size === 2 || item.size === 3) &&
         (item.color === undefined || typeof item.color === 'string');
 }

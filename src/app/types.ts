@@ -8,6 +8,8 @@ export interface PortfolioItem {
     summary: string;
     url: string;
     embed: string;
+    urlIcon?: 'link' | 'itch';
+    embedIcon?: 'game' | 'itch' | 'sketchfab' | 'video';
     size?: 1 | 2 | 3;
     color?: string;
 }

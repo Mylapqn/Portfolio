@@ -58,6 +58,32 @@
     font-size: .75em;
 }
 
+.icon-type-control {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.icon-type-control select {
+    flex: 1;
+    min-width: 0;
+}
+
+.icon-type-preview {
+    display: block;
+    width: 28px;
+    height: 28px;
+    object-fit: contain;
+}
+
+.icon-type-fallback {
+    min-width: 32px;
+    color: var(--text-color-label);
+    font-size: .7em;
+    font-weight: 700;
+    text-align: center;
+}
+
 .field small {
     display: block;
     margin-top: 6px;

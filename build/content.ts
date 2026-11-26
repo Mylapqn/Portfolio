@@ -18,6 +18,8 @@ export interface ManifestItem {
   summary: string;
   url: string;
   embed: string;
+  urlIcon: 'link' | 'itch';
+  embedIcon: 'game' | 'itch' | 'sketchfab' | 'video';
   size?: 1 | 2 | 3;
   color?: string;
 }
@@ -63,9 +65,21 @@ function createManifestItem(itemId: string, metadata: Record<string, string>): M
     summary: metadata.summary || '',
     url: metadata.url || '',
     embed: metadata.embed || '',
+    urlIcon: parseUrlIcon(metadata['url-icon']),
+    embedIcon: parseEmbedIcon(metadata['embed-icon']),
     size: parseSize(metadata.size),
     color: parseColor(metadata.color)
   };
+}
+
+/** Returns a supported icon kind for an external URL, defaulting legacy entries to generic. */
+function parseUrlIcon(value: string | undefined): 'link' | 'itch' {
+  return value === 'itch' ? value : 'link';
+}
+
+/** Returns a supported icon kind for an embed, defaulting generic embeds to the game icon. */
+function parseEmbedIcon(value: string | undefined): 'game' | 'itch' | 'sketchfab' | 'video' {
+  return value === 'itch' || value === 'sketchfab' || value === 'video' ? value : 'game';
 }
 
 /** Returns a supported tile size from frontmatter, if present. */

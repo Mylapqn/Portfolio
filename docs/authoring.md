@@ -18,6 +18,7 @@ size: 2
 color: "#58a6ff"
 url: https://example.com/orbit-puzzle
 embed: https://example.com/orbit-puzzle/embed
+embed-icon: sketchfab
 ---
 
 Write the full project description here.
@@ -41,6 +42,10 @@ Frontmatter is intentionally not full YAML: use one `key: value` per line, with 
 | `color` | Optional six-digit hex work color, e.g. `#58a6ff`; used on the work card and detail-page background. |
 | `url` | Optional external project link. |
 | `embed` | Optional URL embedded on the detail page. |
+| `url-icon` | Icon kind for `url`: `link` (default) or `itch`. |
+| `embed-icon` | Icon kind for `embed`: `game` (default generic embed), `itch`, `sketchfab`, or `video`. |
+
+Work-card markers overlay the thumbnail and are decorative. On detail pages, the URL icon appears in its project button and the embed icon overlays the embedded content. Studio previews the selected icon beside each type selector. Generic links use `link.svg`; generic embeds use `game.svg`. SVGs belong in `assets/icons/` and use `link.svg`, `itch.svg`, `game.svg`, `sketchfab.svg`, and `video.svg`.
 
 ## Use Studio
 

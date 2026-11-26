@@ -16,9 +16,11 @@ test('build emits complete standalone pages and deployment-prefixed assets', () 
   const manifest = JSON.parse(fs.readFileSync(path.join(root, 'dist/manifest.json'), 'utf8')) as {
     id: string;
     embed: string;
+    embedIcon: string;
   }[];
   const homePage = fs.readFileSync(path.join(root, 'dist/index.html'), 'utf8');
   assert.ok(manifest.length > 0);
+  assert.ok(fs.existsSync(path.join(root, 'dist/assets/icons/video.svg')));
   assert.match(homePage, /href="\/Portfolio\/style\.css\?v=/);
   assert.match(fs.readFileSync(path.join(root, 'dist/style.css'), 'utf8'), /\/Portfolio\/styles\/base\.css/);
   const version = homePage.match(/app\.js\?v=(\d+)/)?.[1];
@@ -46,6 +48,24 @@ test('build emits complete standalone pages and deployment-prefixed assets', () 
   assert.ok(embeddedItem);
   const page = fs.readFileSync(path.join(root, 'dist/p', embeddedItem.id, 'index.html'), 'utf8');
   assert.match(page, /<iframe[^>]+title="Embedded portfolio project"/);
+  const deathWish = manifest.find((item) => item.id === 'deathwish');
+  assert.ok(deathWish);
+  assert.equal(deathWish.embedIcon, 'itch');
+  const deathWishPage = fs.readFileSync(path.join(root, 'dist/p/deathwish/index.html'), 'utf8');
+  assert.match(deathWishPage, /class="btn"[^>]*><span class="destination-marker button-icon"[^>]*><img class="destination-icon" src="\/Portfolio\/assets\/icons\/itch\.svg"/);
+  assert.match(deathWishPage, /class="stage"><span class="destination-marker stage-icon"[^>]*><img class="destination-icon" src="\/Portfolio\/assets\/icons\/itch\.svg"/);
+  assert.doesNotMatch(deathWishPage, /Open embed/);
+
+  const robuddy = manifest.find((item) => item.id === 'robuddy');
+  assert.ok(robuddy);
+  assert.equal(robuddy.embedIcon, 'sketchfab');
+  const genericEmbed = manifest.find((item) => item.id === 'why-you-should-not-vibecode-your-portfolio');
+  assert.ok(genericEmbed);
+  assert.equal(genericEmbed.embedIcon, 'game');
+  assert.match(
+    fs.readFileSync(path.join(root, 'dist/p', genericEmbed.id, 'index.html'), 'utf8'),
+    /assets\/icons\/game\.svg/
+  );
 });
 
 function listJavaScriptFiles(directory: string): string[] {

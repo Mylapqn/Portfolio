@@ -151,9 +151,13 @@
   transform: translateY(-3px);
 }
 
+.card-media {
+  position: relative;
+  flex: 0 0 auto;
+}
+
 .card-thumb-link {
   display: block;
-  flex: 0 0 auto;
   overflow: hidden;
   background: #1c2028;
 }
@@ -173,6 +177,40 @@
 .card-body {
   flex: 1 1 auto;
   padding: 18px 20px 20px;
+}
+
+.platform-icons {
+  position: absolute;
+  z-index: 1;
+  top: 12px;
+  left: 12px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  align-items: flex-start;
+  pointer-events: none;
+}
+
+.platform-icon {
+  display: block;
+  width: 26px;
+  height: 26px;
+  object-fit: contain;
+}
+
+.platform-marker {
+  display: inline-flex;
+  min-width: 26px;
+  min-height: 26px;
+  align-items: center;
+  justify-content: center;
+}
+
+.platform-icon-fallback {
+  color: #fff;
+  font-size: 8px;
+  font-weight: 800;
+  letter-spacing: .3px;
 }
 
 .card-title-line {

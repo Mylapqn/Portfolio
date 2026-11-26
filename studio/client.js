@@ -2,7 +2,7 @@
 
 (() => {
     /** @typedef {{ name: string, dataUrl: string }} UploadedFile */
-    /** @typedef {{ id: string, type: 'work' | 'article', title: string, date: string, tags: string[], summary: string, thumb: string, url: string, embed: string, size: number, color: string }} Project */
+    /** @typedef {{ id: string, type: 'work' | 'article', title: string, date: string, tags: string[], summary: string, thumb: string, url: string, embed: string, urlIcon: 'link' | 'itch', embedIcon: 'game' | 'itch' | 'sketchfab' | 'video', size: number, color: string }} Project */
     /** @typedef {{ project: Project, body: string }} ProjectResponse */
     /** @typedef {{ message: string }} MessageResponse */
 
@@ -130,6 +130,8 @@
             typeof value.thumb === 'string' &&
             typeof value.url === 'string' &&
             typeof value.embed === 'string' &&
+            (value.urlIcon === 'link' || value.urlIcon === 'itch') &&
+            (value.embedIcon === 'game' || value.embedIcon === 'itch' || value.embedIcon === 'sketchfab' || value.embedIcon === 'video') &&
             typeof value.size === 'number' &&
             typeof value.color === 'string';
     }
@@ -227,6 +229,40 @@
         return match ? `#${match[1].toLowerCase()}` : null;
     }
 
+    /** Updates the icon preview beside a Studio destination selector. */
+    /** @param {string} selectId */
+    function updateIconPreview(selectId) {
+        const select = field(selectId);
+        const preview = /** @type {HTMLImageElement} */ (element(`${selectId}-preview`));
+        const fallback = element(`${selectId}-fallback`);
+        const fallbackLabels = /** @type {Record<string, string>} */ ({
+            link: 'LINK',
+            itch: 'ITCH',
+            game: 'GAME',
+            sketchfab: '3D',
+            video: 'VIDEO'
+        });
+
+        fallback.textContent = fallbackLabels[select.value] || 'ICON';
+        fallback.hidden = true;
+        preview.hidden = false;
+        preview.src = `/studio-icons/${encodeURIComponent(select.value)}.svg`;
+        preview.onerror = () => {
+            preview.hidden = true;
+            fallback.hidden = false;
+        };
+        preview.onload = () => {
+            preview.hidden = false;
+            fallback.hidden = true;
+        };
+    }
+
+    /** Refreshes both destination icon previews. */
+    function updateIconPreviews() {
+        updateIconPreview('url-icon');
+        updateIconPreview('embed-icon');
+    }
+
     /** @returns {string} */
     function currentSnapshot() {
         return JSON.stringify({
@@ -238,7 +274,9 @@
             summary: field('summary').value,
             tags: state.selectedTags,
             url: field('url').value,
+            urlIcon: field('url-icon').value,
             embed: field('embed').value,
+            embedIcon: field('embed-icon').value,
             size: field('size').value,
             colorEnabled: input('color-enabled').checked,
             color: input('color').value,
@@ -473,6 +511,7 @@
         state.selectedTags = [];
         resetPendingUploads();
         projectForm.reset();
+        updateIconPreviews();
         dateInput.value = localDateValue();
         colorPicker.hidden = true;
         element('thumb-name').textContent = 'Image uploads are saved to the assets folder.';
@@ -509,6 +548,9 @@
             field('thumb-url').value = project.thumb;
             field('url').value = project.url;
             field('embed').value = project.embed;
+            field('url-icon').value = project.urlIcon;
+            field('embed-icon').value = project.embedIcon;
+            updateIconPreviews();
             field('size').value = String(project.size || 1);
             input('color-enabled').checked = Boolean(project.color);
             input('color').value = normalizeHex(project.color) || '#58a6ff';
@@ -600,7 +642,7 @@
         const controls = Array.from(
             projectForm.querySelectorAll('input, select, textarea, button')
         ).map((control) =>
-            /** @type {HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement | HTMLButtonElement} */ (control)
+            /** @type {HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement | HTMLButtonElement} */(control)
         );
         const originalDisabledStates = controls.map((control) => control.disabled);
         controls.forEach((control) => { control.disabled = true; });
@@ -640,6 +682,8 @@
                 thumb: field('thumb-url').value.trim(),
                 url: field('url').value.trim(),
                 embed: field('embed').value.trim(),
+                urlIcon: field('url-icon').value,
+                embedIcon: field('embed-icon').value,
                 size: Number(field('size').value),
                 color: selectedColor || '',
                 body: bodyEditor.value,
@@ -740,6 +784,8 @@
         event.preventDefault();
         saveProject(true);
     });
+    field('url-icon').addEventListener('change', updateIconPreviews);
+    field('embed-icon').addEventListener('change', updateIconPreviews);
     element('build-content').addEventListener('click', () => buildContent(false));
     element('build-ftp').addEventListener('click', () => buildContent(true));
 
@@ -766,6 +812,7 @@
     });
 
     colorPicker.hidden = true;
+    updateIconPreviews();
     markClean();
 
     refreshProjects().catch((error) => {

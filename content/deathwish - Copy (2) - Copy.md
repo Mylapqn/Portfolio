@@ -6,7 +6,9 @@ tags: game, art, 2d, game jam
 thumb: /assets/robuddy - Copy (11)-thumbnail.png
 summary: 2D game about being friends with Death
 url: https://notrustybot.itch.io/deathwish
+url-icon: itch
 embed: https://itch.io/embed-upload/13878953?color=060518
+embed-icon: itch
 size: 1
 color: #fb745b
 ---
