@@ -102,9 +102,10 @@ function copyStaticAssets(version: string): void {
   }
   fs.mkdirSync('dist/styles', { recursive: true });
   fs.cpSync('src/styles', 'dist/styles', { recursive: true });
-  const stylesheet = fs
-    .readFileSync('src/style.css', 'utf8')
-    .replace(/\{\{VERSION\}\}/g, encodeURIComponent(version));
+  const stylesheet = injectTokens(fs.readFileSync('src/style.css', 'utf8'), {
+    VERSION: encodeURIComponent(version),
+    BASE_PATH: SITE_BASE_PATH
+  });
   fs.writeFileSync('dist/style.css', stylesheet, 'utf8');
   if (fs.existsSync('src/.htaccess')) {
     fs.copyFileSync('src/.htaccess', 'dist/.htaccess');
