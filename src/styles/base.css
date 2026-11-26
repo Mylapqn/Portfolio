@@ -40,6 +40,10 @@ button, input {
   transition: background .2s, color .2s, border .2s;
 }
 
+.backdrop-blur{
+  backdrop-filter: blur(5px);
+}
+
 .site-nav {
   position: fixed;
   z-index: 2;

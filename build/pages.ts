@@ -43,7 +43,7 @@ export function renderItemPage(
         ? `<meta property="og:image" content="${escapeAttribute(ogImageUrl)}">`
         : '';
     const embedSection = item.embed
-        ? `<div class="stage">${renderIconMarker(item.embedIcon || 'game', 'stage-icon')}<iframe src="${escapeAttribute(item.embed)}" title="Embedded portfolio project" allowfullscreen></iframe></div>`
+        ? `<div class="stage"><iframe src="${escapeAttribute(item.embed)}" title="Embedded portfolio project" allowfullscreen></iframe></div>`
         : '';
     const externalLink = item.url
         ? `<a class="btn" href="${escapeAttribute(item.url)}" target="_blank" rel="noopener noreferrer">${renderIconMarker(item.urlIcon || 'link', 'button-icon')}${externalLinkLabel(item.urlIcon)}</a>`
