@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "build": "tsx build.ts",
+    "dev": "tsx dev.ts",
     "studio": "tsx studio/studio.ts",
     "test": "tsx --test",
     "typecheck": "tsc --noEmit && tsc --noEmit -p tsconfig.node.json && tsc --noEmit -p tsconfig.studio-client.json"

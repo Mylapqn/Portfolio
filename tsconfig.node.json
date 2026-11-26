@@ -10,5 +10,5 @@
     "noEmit": true,
     "skipLibCheck": true
   },
-  "include": ["studio/**/*.ts", "build.ts", "shared/**/*.ts"]
+  "include": ["studio/**/*.ts", "build.ts", "dev.ts", "shared/**/*.ts"]
 }

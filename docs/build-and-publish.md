@@ -22,6 +22,10 @@ The test command checks build helpers and builds a `/Portfolio`-prefixed site to
 
 For what the checks cover, when to run them, and how to interpret failures, see [Tests and checks](./testing.md).
 
+## Live local preview
+
+Run `npm run dev` and open <http://localhost:4174/>. The command builds the site, serves the generated `dist/` folder, and watches CSS, HTML, and TypeScript files in `src/` and `build/`, plus the root `build.ts`. After a successful rebuild, any open preview page reloads automatically. Press Ctrl+C to stop the server. Set `PORT` to use a different local port.
+
 ## Build configuration
 
 `npm run build` reads these environment variables; their defaults are defined in [`build/config.ts`](../build/config.ts):

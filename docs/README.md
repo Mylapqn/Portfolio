@@ -11,10 +11,13 @@ npm ci                 # fresh checkout only
 npm test
 npm run typecheck
 npm run build
+npm run dev
 npm run studio
 ```
 
 Studio opens at <http://localhost:4173/>. **Save** writes the current entry and uploaded images; **Save & Build** also rebuilds the site. Dashboard build and FTP actions use already-saved content.
+
+For a live public-site preview, run `npm run dev` and open <http://localhost:4174/>. It serves `dist/`, rebuilds when source CSS, HTML, or TypeScript changes, and reloads the browser after each successful build. Stop it with Ctrl+C.
 
 ## Find your way
 
