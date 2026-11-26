@@ -26,6 +26,12 @@ Check `dist/index.html`, `dist/manifest.json`, and `dist/p/<id>/index.html` for 
 
 Set these in the build environment when deploying to a different path or domain. `SITE_URL` and `SITE_BASE_PATH` serve different purposes; for the GitHub project site, the defaults for `SITE_URL` do not automatically set `SITE_BASE_PATH`.
 
+## Publish with GitHub Actions
+
+The workflow in `.github/workflows/build-deploy-pages.yml` typechecks and builds the site on pushes and pull requests targeting `main`. It sets `SITE_BASE_PATH=/portfolio`, packages `dist/` as a Pages artifact, and deploys it to GitHub Pages after successful pushes to `main` (or a manual run on `main`). Pull requests run the build but do not deploy.
+
+In the repository's **Settings → Pages**, select **GitHub Actions** as the build and deployment source. The workflow needs the repository's Pages deployment permissions enabled. Once configured, pushes to `main` publish to <https://mylapqn.github.io/portfolio/>.
+
 ## Publish with Studio
 
 Run `npm run studio` and open <http://localhost:4173/>. Studio is a local tool bound to `127.0.0.1` (default port `4173`; override with `STUDIO_PORT`).
