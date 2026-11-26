@@ -24,7 +24,14 @@ test('build emits complete standalone pages and deployment-prefixed assets', () 
   assert.ok(manifest.length > 0);
   assert.ok(fs.existsSync(path.join(root, 'dist/assets/icons/video.svg')));
   assert.match(homePage, /href="\/Portfolio\/style\.css\?v=/);
+  assert.match(homePage, /<div class="site-nav-brand">\s*<a href="\/Portfolio\/">Matouš Marek<\/a>/);
+  assert.match(homePage, /class="site-nav-spacer" aria-hidden="true"/);
+  assert.match(homePage, /<a href="\/Portfolio\/\?view=works" data-page="works">WORKS<\/a>/);
   assert.match(fs.readFileSync(path.join(root, 'dist/style.css'), 'utf8'), /\/Portfolio\/styles\/base\.css/);
+  const aboutPage = fs.readFileSync(path.join(root, 'dist/about/index.html'), 'utf8');
+  const contactPage = fs.readFileSync(path.join(root, 'dist/contact/index.html'), 'utf8');
+  assert.match(aboutPage, /href="\/Portfolio\/about\/" aria-current="page">ABOUT ME<\/a>/);
+  assert.match(contactPage, /href="\/Portfolio\/contact\/" aria-current="page">CONTACT<\/a>/);
   const pageColorStyles = fs.readFileSync(path.join(root, 'dist/styles/page-colors.css'), 'utf8');
   const version = homePage.match(/app\.js\?v=(\d+)/)?.[1];
   assert.ok(version);
@@ -39,6 +46,8 @@ test('build emits complete standalone pages and deployment-prefixed assets', () 
   const coloredWork = manifest.find((item) => item.type === 'work' && item.color);
   assert.ok(coloredWork);
   const coloredPage = fs.readFileSync(path.join(root, 'dist/p', coloredWork.id, 'index.html'), 'utf8');
+  assert.match(coloredPage, /<div class="site-nav-brand">\s*<a href="\/Portfolio\/">Matouš Marek<\/a>/);
+  assert.doesNotMatch(coloredPage, /data-page="works"/);
   assert.match(coloredPage, new RegExp(`href="/Portfolio/styles/page-colors\\.css\\?v=${version}"`));
   assert.match(coloredPage, /<body class="work-page page-bg-[0-9a-f]{6}">/);
   assert.doesNotMatch(coloredPage, /<body[^>]+style=/);

@@ -2,6 +2,7 @@
 export const SITE_URL = (process.env.SITE_URL || 'https://mylapqn.github.io/Portfolio').replace(/\/+$/, '');
 export const SITE_ORIGIN = new URL(SITE_URL).origin;
 export const SITE_BASE_PATH = normalizeBasePath(process.env.SITE_BASE_PATH || '');
+export const SITE_BRAND = 'Matouš Marek';
 export const SITE_NAME = 'Matouš Marek | Portfolio';
 
 /**

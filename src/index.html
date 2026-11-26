@@ -11,21 +11,14 @@
 </head>
 
 <body>
-    <header class="site-nav backdrop-blur" role="banner">
-        <nav class="site-nav-links" aria-label="Main navigation">
-            <a href="{{BASE_PATH}}/?view=works" data-page="works">WORKS</a>
-            <a href="{{BASE_PATH}}/?view=blog" data-page="blog">BLOG</a>
-            <a href="{{BASE_PATH}}/about/">ABOUT ME</a>
-            <a href="{{BASE_PATH}}/contact/">CONTACT</a>
-        </nav>
-    </header>
+    {{SITE_NAV}}
 
     <section id="hero" class="hero" aria-labelledby="hero-title">
         <img id="hero-image" class="hero-image" alt="" hidden>
         <div class="hero-shade"></div>
         <div class="hero-inner">
             <p class="hero-kicker">Portfolio of works</p>
-            <h1 id="hero-title">Matouš Marek</h1>
+            <h1 id="hero-title">{{SITE_BRAND}}</h1>
             <p id="hero-description">3D Artist - Game Developer</p>
             <label id="search-label" class="sr-only" for="search">Search projects</label>
             <input id="search" class="feed-search backdrop-blur" type="search" placeholder="Search projects..." autocomplete="off">

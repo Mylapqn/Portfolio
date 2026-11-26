@@ -25,7 +25,11 @@ export interface ManifestItem {
 }
 
 /** Builds standalone pages and manifest entries from Markdown content files. */
-export function buildItemPages(template: string, version: string): ManifestItem[] {
+export function buildItemPages(
+    template: string,
+    version: string,
+    navTemplate: string
+): ManifestItem[] {
     const markdownFiles = fs.existsSync('content')
         ? fs.readdirSync('content').filter((file) => file.endsWith('.md'))
         : [];
@@ -41,7 +45,7 @@ export function buildItemPages(template: string, version: string): ManifestItem[
         const renderedBody = prefixRootRelativeUrls(
             addImageCaptions(marked.parse(body, { async: false }) as string)
         );
-        const pageHtml = renderItemPage(template, item, renderedBody, version);
+        const pageHtml = renderItemPage(template, item, renderedBody, version, navTemplate);
         const itemDirectory = path.join('dist/p', itemId);
 
         fs.mkdirSync(itemDirectory, { recursive: true });

@@ -2,7 +2,14 @@
 
 import * as fs from 'node:fs';
 import * as path from 'node:path';
-import { prefixSitePath, SITE_BASE_PATH, SITE_NAME, SITE_ORIGIN, SITE_URL } from './config';
+import {
+    prefixSitePath,
+    SITE_BASE_PATH,
+    SITE_BRAND,
+    SITE_NAME,
+    SITE_ORIGIN,
+    SITE_URL
+} from './config';
 import type { ManifestItem } from './content';
 import {
     darkenColor,
@@ -13,13 +20,14 @@ import {
 } from './template';
 
 /** Writes the static About and Contact pages. */
-export function buildStaticPages(version: string): void {
-    for (const page of ['about', 'contact']) {
+export function buildStaticPages(version: string, navTemplate: string): void {
+    for (const page of ['about', 'contact'] as const) {
         const template = fs.readFileSync(`src/${page}.html`, 'utf8');
         const html = injectTokens(template, {
             VERSION: version,
             BASE_PATH: SITE_BASE_PATH,
-            SITE_NAME: escapeHtml(SITE_NAME)
+            SITE_NAME: escapeHtml(SITE_NAME),
+            SITE_NAV: renderSiteNav(navTemplate, page)
         });
         const pageDirectory = path.join('dist', page);
 
@@ -33,7 +41,8 @@ export function renderItemPage(
     template: string,
     item: ManifestItem,
     contentHtml: string,
-    version: string
+    version: string,
+    navTemplate: string
 ): string {
     const canonicalUrl = `${SITE_URL}/p/${encodeURIComponent(item.id)}/`;
     const ogImageUrl = item.thumb.startsWith('/')
@@ -64,6 +73,7 @@ export function renderItemPage(
         VERSION: version,
         BASE_PATH: SITE_BASE_PATH,
         SITE_NAME: escapeHtml(SITE_NAME),
+        SITE_NAV: renderSiteNav(navTemplate, 'item', true),
         TITLE: escapeHtml(item.title),
         TITLE_ATTR: escapeAttribute(item.title),
         SUMMARY_ATTR: escapeAttribute(item.summary),
@@ -76,6 +86,23 @@ export function renderItemPage(
         EMBED_HTML: embedSection,
         EXTERNAL_LINK_HTML: externalLink,
         CONTENT: contentHtml
+    });
+}
+
+/** Renders the shared navigation with page-specific state and styling. */
+export function renderSiteNav(
+    template: string,
+    page: 'home' | 'about' | 'contact' | 'item',
+    useBackdropBlur: boolean = false
+): string {
+    return injectTokens(template, {
+        BASE_PATH: SITE_BASE_PATH,
+        SITE_BRAND: escapeHtml(SITE_BRAND),
+        NAV_CLASS: useBackdropBlur ? 'backdrop-blur' : '',
+        WORKS_ATTRIBUTES: page === 'home' ? 'data-page="works"' : '',
+        BLOG_ATTRIBUTES: page === 'home' ? 'data-page="blog"' : '',
+        ABOUT_ATTRIBUTES: page === 'about' ? 'aria-current="page"' : '',
+        CONTACT_ATTRIBUTES: page === 'contact' ? 'aria-current="page"' : ''
     });
 }
 

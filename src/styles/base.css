@@ -4,8 +4,8 @@
 
 :root {
   color-scheme: dark;
-  --page-bg: #0d0f12;
-  --panel-bg: #15181e;
+  --page-bg: #121718;
+  --panel-bg: #31363f;
   --line: #292e37;
   --text: #e6e8ec;
   --muted: #9aa3ae;
@@ -48,22 +48,49 @@ button, input, a {
   position: fixed;
   z-index: 2;
   display: flex;
+  gap: clamp(8px, 2vw, 18px);
   width: 100%;
   min-height: 72px;
   align-items: start;
-  justify-content: center;
   /*! border-bottom: 1px solid #252a32; */
   background: #0d0f12;
   background: linear-gradient(#090909,#0000);
 }
 
+.site-nav-brand {
+  flex: 1 1 0;
+  min-width: max-content;
+  padding-top: 2px;
+}
+
+.site-nav-brand a {
+  display: inline-block;
+  padding-left: clamp(16px, 4vw, 36px);
+  color: #fff;
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 5rem;
+  white-space: nowrap;
+  padding-right: clamp(16px, 4vw, 36px);
+}
+
+.site-nav-brand a:hover {
+  text-decoration: none;
+}
+
 .site-nav-links {
+  flex: 0 0 auto;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: clamp(22px, 5vw, 72px);
   /*! padding: 12px 20px; */
   /*! padding: 0; */
+}
+
+.site-nav-spacer {
+  flex: 1 1 0;
+  min-width: 0;
 }
 
 .site-nav-links a {

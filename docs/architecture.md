@@ -16,7 +16,7 @@ The public portfolio is a static website. Source content and code live in the pr
 | --- | --- |
 | `build.ts` | Entry point that coordinates a complete site build. |
 | `build/` | Build modules: `assets.ts` prepares output, compiles the browser app, versions module imports, and copies assets; `content.ts` renders Markdown entries and creates manifest items; `pages.ts` creates standalone pages; `template.ts` provides token, HTML, and rendering helpers; `config.ts` handles site URLs and deployment paths. |
-| `src/` | Source for the public site: page templates (`index.html`, `about.html`, `contact.html`, `item.html`), the browser entry point (`app.ts`) and its modules in `app/`, plus the stylesheet entry point and modular styles. |
+| `src/` | Source for the public site: page templates (`index.html`, `about.html`, `contact.html`, `item.html`), shared HTML fragments in `partials/`, the browser entry point (`app.ts`) and its modules in `app/`, plus the stylesheet entry point and modular styles. |
 | `shared/` | Small code used by both the build and Studio server. It currently contains the simple Markdown frontmatter parser. |
 | `studio/` | The local content editor: `studio.ts` serves the editor and handles API requests, `client.js` runs the browser interface, and the HTML/CSS files define its UI. |
 | `tests/` | Automated tests for parsing, templates, manifest validation, module URL versioning, and generated build output. See [Tests and checks](./testing.md) for what they cover and when to run them. |
@@ -30,7 +30,7 @@ The public portfolio is a static website. Source content and code live in the pr
 1. `npm run build` runs `build.ts` through `tsx`. The build creates a version identifier and clears `dist/`.
 2. The build compiles the public TypeScript into native JavaScript modules. It adds the build version to local module imports so cached modules stay in step with the entry script.
 3. Static media and styles are copied, and the Markdown entries in `content/` are parsed using the shared frontmatter helper and rendered into standalone pages with `marked`.
-4. The build writes each entry to `dist/p/<id>/index.html`, creates `dist/manifest.json`, and fills the home, About, and Contact pages from their templates.
+4. The build writes each entry to `dist/p/<id>/index.html`, creates `dist/manifest.json`, and fills the home, About, and Contact pages from their templates. Shared fragments such as the site navigation are inserted into each page during the build.
 5. The browser app loads the manifest to display the Works and Blog feeds. Publish the contents of `dist/`. `SITE_BASE_PATH` controls the URL prefix: it defaults to empty in `build/config.ts`, while `.github/workflows/build-deploy-pages.yml` sets it to `/Portfolio` for GitHub Pages. `SITE_URL` separately controls canonical and social URLs. See [Build and publish](./build-and-publish.md) to configure these values.
 
 The tests also run a build-output check using `/Portfolio`, so that test regenerates `dist/` with the project-site prefix. For test details and how to restore a root-path build, see [Tests and checks](./testing.md).
