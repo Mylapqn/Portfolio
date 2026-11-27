@@ -55,7 +55,7 @@ test('build emits complete standalone pages and deployment-prefixed assets', () 
   assert.doesNotMatch(coloredPage, /data-page-style|document\.body\.style\.cssText/);
   const colorClass = coloredPage.match(/<body class="work-page (page-bg-[0-9a-f]{6})">/)?.[1];
   assert.ok(colorClass);
-  assert.match(pageColorStyles, new RegExp(`\\.${colorClass} \\{\\s*--page-bg: #[0-9a-f]{6};\\s*\\}`));
+  assert.match(pageColorStyles, new RegExp(`\\.${colorClass} \\{[^}]*--page-bg: #[0-9a-f]{6};`));
 
   const modules = [path.join(root, 'dist/app.js'), ...listJavaScriptFiles(path.join(root, 'dist/app'))];
   for (const modulePath of modules) {
@@ -74,10 +74,10 @@ test('build emits complete standalone pages and deployment-prefixed assets', () 
   assert.match(page, /<iframe[^>]+title="Embedded portfolio project"/);
   const deathWish = manifest.find((item) => item.id === 'deathwish');
   assert.ok(deathWish);
-  assert.equal(deathWish.embedIcon, 'itch');
+  assert.equal(deathWish.urlIcon, 'itch');
   const deathWishPage = fs.readFileSync(path.join(root, 'dist/p/deathwish/index.html'), 'utf8');
   assert.match(deathWishPage, /class="btn"[^>]*><span class="destination-marker button-icon"[^>]*><img class="destination-icon" src="\/Portfolio\/assets\/icons\/itch\.svg"/);
-  assert.match(deathWishPage, /class="stage"><span class="destination-marker stage-icon"[^>]*><img class="destination-icon" src="\/Portfolio\/assets\/icons\/itch\.svg"/);
+  assert.doesNotMatch(deathWishPage, /class="stage"/);
   assert.doesNotMatch(deathWishPage, /Open embed/);
 
   const robuddy = manifest.find((item) => item.id === 'robuddy');
@@ -88,7 +88,7 @@ test('build emits complete standalone pages and deployment-prefixed assets', () 
   assert.equal(genericEmbed.embedIcon, 'game');
   assert.match(
     fs.readFileSync(path.join(root, 'dist/p', genericEmbed.id, 'index.html'), 'utf8'),
-    /assets\/icons\/game\.svg/
+    /<iframe src="https:\/\/matousmarek\.cz\/" title="Embedded portfolio project"/
   );
 });
 
