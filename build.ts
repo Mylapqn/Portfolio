@@ -1,7 +1,7 @@
 /// <reference types="node" />
 
 import * as fs from 'node:fs';
-import { SITE_BASE_PATH, SITE_BRAND, SITE_NAME } from './build/config';
+import { SITE_BASE_PATH, SITE_NAME } from './build/config';
 import {
   compileBrowserApp,
   copyStaticAssets,
@@ -36,7 +36,6 @@ function buildSite(): void {
     VERSION: version,
     BASE_PATH: SITE_BASE_PATH,
     SITE_NAME: escapeHtml(SITE_NAME),
-    SITE_BRAND: escapeHtml(SITE_BRAND),
     SITE_NAV: renderSiteNav(navTemplate, 'home', true)
   });
   fs.writeFileSync('dist/index.html', indexHtml, 'utf8');

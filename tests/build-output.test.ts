@@ -24,7 +24,8 @@ test('build emits complete standalone pages and deployment-prefixed assets', () 
   assert.ok(manifest.length > 0);
   assert.ok(fs.existsSync(path.join(root, 'dist/assets/icons/video.svg')));
   assert.match(homePage, /href="\/Portfolio\/style\.css\?v=/);
-  assert.match(homePage, /<div class="site-nav-brand">\s*<a href="\/Portfolio\/">Matouš Marek<\/a>/);
+  assert.match(homePage, /<img class="site-nav-logo" src="\/Portfolio\/assets\/logo-white\.svg" alt="" width="32" height="32">/);
+  assert.match(homePage, /<span class="site-nav-brand-name">Matouš Marek<\/span>/);
   assert.match(homePage, /class="site-nav-spacer" aria-hidden="true"/);
   assert.match(homePage, /<a href="\/Portfolio\/\?view=works" data-page="works">WORKS<\/a>/);
   assert.match(fs.readFileSync(path.join(root, 'dist/style.css'), 'utf8'), /\/Portfolio\/styles\/base\.css/);
@@ -46,7 +47,7 @@ test('build emits complete standalone pages and deployment-prefixed assets', () 
   const coloredWork = manifest.find((item) => item.type === 'work' && item.color);
   assert.ok(coloredWork);
   const coloredPage = fs.readFileSync(path.join(root, 'dist/p', coloredWork.id, 'index.html'), 'utf8');
-  assert.match(coloredPage, /<div class="site-nav-brand">\s*<a href="\/Portfolio\/">Matouš Marek<\/a>/);
+  assert.match(coloredPage, /<img class="site-nav-logo" src="\/Portfolio\/assets\/logo-white\.svg" alt="" width="32" height="32">/);
   assert.doesNotMatch(coloredPage, /data-page="works"/);
   assert.match(coloredPage, new RegExp(`href="/Portfolio/styles/page-colors\\.css\\?v=${version}"`));
   assert.match(coloredPage, /<body class="work-page page-bg-[0-9a-f]{6}">/);

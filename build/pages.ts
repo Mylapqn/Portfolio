@@ -5,7 +5,6 @@ import * as path from 'node:path';
 import {
     prefixSitePath,
     SITE_BASE_PATH,
-    SITE_BRAND,
     SITE_NAME,
     SITE_ORIGIN,
     SITE_URL
@@ -97,7 +96,6 @@ export function renderSiteNav(
 ): string {
     return injectTokens(template, {
         BASE_PATH: SITE_BASE_PATH,
-        SITE_BRAND: escapeHtml(SITE_BRAND),
         NAV_CLASS: useBackdropBlur ? 'backdrop-blur' : '',
         WORKS_ATTRIBUTES: page === 'home' ? 'data-page="works"' : '',
         BLOG_ATTRIBUTES: page === 'home' ? 'data-page="blog"' : '',

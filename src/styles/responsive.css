@@ -32,6 +32,10 @@
 }
 
 @media (max-width: 760px) {
+  .site-nav-brand-name {
+    display: none;
+  }
+
   .site-nav-brand a {
     font-size: 12px;
   }
@@ -54,6 +58,7 @@
   .site-nav-brand a {
     padding-left: 12px;
     line-height: 60px;
+    min-height: 60px;
   }
 
   .site-nav-links {

@@ -64,7 +64,10 @@ button, input, a {
 }
 
 .site-nav-brand a {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 5rem;
   padding-left: clamp(16px, 4vw, 36px);
   color: #fff;
   font-size: 15px;
@@ -72,6 +75,18 @@ button, input, a {
   line-height: 5rem;
   white-space: nowrap;
   padding-right: clamp(16px, 4vw, 36px);
+}
+
+.site-nav-logo {
+  display: block;
+  width: 32px;
+  height: 32px;
+  flex: none;
+  object-fit: contain;
+}
+
+.site-nav-brand-name {
+  white-space: nowrap;
 }
 
 .site-nav-brand a:hover {

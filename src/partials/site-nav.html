@@ -1,6 +1,9 @@
 <header class="site-nav {{NAV_CLASS}}" role="banner">
     <div class="site-nav-brand">
-        <a href="{{BASE_PATH}}/">{{SITE_BRAND}}</a>
+        <a href="{{BASE_PATH}}/" aria-label="Matouš Marek home">
+            <img class="site-nav-logo" src="{{BASE_PATH}}/assets/logo-white.svg" alt="" width="32" height="32">
+            <span class="site-nav-brand-name">Matouš Marek</span>
+        </a>
     </div>
     <nav class="site-nav-links" aria-label="Main navigation">
         <a href="{{BASE_PATH}}/?view=works" {{WORKS_ATTRIBUTES}}>WORKS</a>
